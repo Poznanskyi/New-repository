@@ -6,7 +6,7 @@ import random
 import string
 
 
-papki = {
+file_dict = {
     "documents": [".doc", ".docx", ".xls", ".xlsx", ".txt", ".pdf"],
     "audio": [".mp3", ".ogg", ".wav", ".amr"],
     "video": [".avi", ".mp4", ".mov", ".mkv"],
@@ -16,7 +16,7 @@ papki = {
 
 
 SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ?<>,!@#[]#$%^&*()-=; "
-TRANSLATION = ("a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
+TRANSLATION = ("a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",\
                "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya", "je", "i", "ji", "g", "_")
 TRANSLATE = {}
 for x, y in zip(SYMBOLS, TRANSLATION):
@@ -64,13 +64,14 @@ def folder_sort(i, dr):
 def sort_file(path):
     global fold
     p = Path(path)
+    
     for _ in range(2):
         for i in p.iterdir():
             if i.name in ("documents", "audio", "video", "images", "archives", "other"):
                 continue
             if i.is_file():
                 flag = False
-                for f, suf in papki.items():
+                for f, suf in file_dict.items():
                     if i.suffix.lower() in suf:
                         dr = Path(fold, f)
                         is_fold_exists(i, dr)
@@ -102,6 +103,7 @@ def main(path):
     p = Path(path)
 
     total_dict = collections.defaultdict(list)
+    
     for item in p.iterdir():
         if item.is_dir():
             for file in item.iterdir():
